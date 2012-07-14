@@ -17,35 +17,14 @@ module Helper
   def Helper.shoot?(warrior)
     warrior.look.size.times do |t|
       [:forward,:backward].each do |dir|
-        if t == 0 
-          ENEMIES.each do |enemy|
-            if warrior.look(dir)[t].to_s == "#{enemy}"
-              return dir
+        ENEMIES.each do |enemy|
+          if warrior.look(dir)[t].to_s == "#{enemy}"
+            flag = 1
+            t.times do |t2|
+              print "#{t} #{t2+1} <--- t2\n"
+              flag = 0 unless  warrior.look(dir)[t-(t2+1)].to_s == "nothing"
             end
-          end
-        elsif t == 1
-          if warrior.look(dir)[t].to_s == "Wizard" && warrior.look(dir)[t-1].to_s == "nothing"
-            return dir
-          end
-          if warrior.look(dir)[t].to_s == "Archer" && warrior.look(dir)[t-1].to_s == "nothing"
-            return dir
-          end
-
-          if warrior.look(dir)[t].to_s == "Sludge" && warrior.look(dir)[t-1].to_s == "nothing"
-            return dir
-          end
-
-
-        elsif t == 2
-          if warrior.look(dir)[t].to_s == "Wizard" && warrior.look(dir)[t-1].to_s == "nothing" && warrior.look(dir)[t-2].to_s == "nothing"
-            return dir
-          end
-          if warrior.look(dir)[t].to_s == "Archer" && warrior.look(dir)[t-1].to_s == "nothing" && warrior.look(dir)[t-2].to_s == "nothing"
-            return dir
-          end
-
-          if warrior.look(dir)[t].to_s == "Sludge" && warrior.look(dir)[t-1].to_s == "nothing" && warrior.look(dir)[t-2].to_s == "nothing"
-            return dir
+            return dir if flag == 1
           end
         end
       end

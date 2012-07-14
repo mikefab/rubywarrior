@@ -1,33 +1,49 @@
+require "Helper"
 class Player
+include Helper
+ 
   def play_turn(warrior)
-    @health ||= warrior.health
-    siege = (warrior.health<@health) ? true : false
-    if warrior.feel.wall?
-      warrior.pivot!
-    else
-      if warrior.feel.empty?
-        if siege
-          if warrior.health < 10
-            warrior.walk!(:backward)
-          else
-            warrior.walk!
-          end
-        else
-          if warrior.health <= 19 
-            warrior.rest!
-          else 
-            warrior.walk!
-          end
-        end
+    should_shoot     =  Helper.shoot?(warrior)
+    fit       =  Helper.fit?(warrior)
+    @health ||=  warrior.health
+    siege     =  Helper.siege?(warrior,@health) 
+    diff      =  @health - warrior.health 
+    
+    if should_shoot
+      if should_shoot.match(/forward/)
+        warrior.shoot!
       else
-        if warrior.feel.captive?
-          warrior.rescue!
+        #warrior.pivot! 
+        warrior.shoot!(:backward)
+      end
+    else
+
+      if warrior.feel.wall?
+        warrior.pivot!
+      else
+        if warrior.feel.empty?
+          if siege
+            if fit
+              warrior.walk!(:backward)
+            else
+              warrior.walk!
+            end
+          else
+            if fit
+              warrior.rest!
+            else 
+              warrior.walk!
+            end
+          end
         else
-          warrior.attack!
+          if warrior.feel.captive?
+            warrior.rescue!
+          else
+            warrior.attack!
+          end
         end
       end
     end
     @health = warrior.health  
-    # add your code here
   end
 end

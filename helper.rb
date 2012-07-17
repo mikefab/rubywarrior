@@ -3,7 +3,7 @@ module Helper
   ENEMIES = ["Wizard","Archer","Sludge"]
 
   def Helper.fit?(warrior)
-    if warrior.health <= 19
+    if warrior.health >= 19
       return true
     else
       return false

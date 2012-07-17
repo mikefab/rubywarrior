@@ -24,15 +24,15 @@ include Helper
         if warrior.feel.empty?
           if siege
             if fit
-              warrior.walk!(:backward)
+              warrior.walk!              
             else
-              warrior.walk!
+              warrior.walk!(:backward)
             end
           else
             if fit
-              warrior.rest!
-            else 
               warrior.walk!
+            else 
+              warrior.rest!
             end
           end
         else
